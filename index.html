@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chúc Thi Tốt - Tràn Đầy May Mắn</title>
+    <title>BÍ MẬT TUYỆT ĐỐI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -23,6 +23,14 @@
             z-index: -1;
             opacity: 0.8;
             background-image: url("data:image/svg+xml,%3Csvg width='150' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Cstyle%3E .emboss %7B fill: rgba(0,0,0,0.04); filter: drop-shadow(1px 1px 0px rgba(255,255,255,1)); %7D .txt %7B font-family: sans-serif; font-weight: 900; font-size: 24px; %7D %3C/style%3E%3Cg class='emboss'%3E%3Ctext x='20' y='40' class='txt'%3E100%3C/text%3E%3Cpath d='M99.6 34.8c0-3.4-2.8-6.2-6.2-6.2-2.2 0-4.1 1.2-5.2 3-1.1-1.8-3-3-5.2-3-3.4 0-6.2 2.8-6.2 6.2 0 2.5 1.5 4.6 3.6 5.6-2.1 1-3.6 3.1-3.6 5.6 0 3.4 2.8 6.2 6.2 6.2 2.2 0 4.1-1.2 5.2-3 1.1 1.8 3 3 5.2 3 3.4 0 6.2-2.8 6.2-6.2 0-2.5-1.5-4.6-3.6-5.6 2.1-1 3.6-3.1 3.6-5.6z'/%3E%3Ctext x='90' y='120' class='txt'%3E100%3C/text%3E%3Cpath d='M30 110 l4 -8 l8 0 l-6 6 l2 8 l-8 -4 l-8 4 l2 -8 l-6 -6 l8 0 z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* --- STYLES CHO CHẾ ĐỘ PRANK (LỖI) --- */
+        body.prank-mode {
+            background: #ffffff !important;
+        }
+        body.prank-mode::before {
+            display: none !important;
         }
 
         /* Animations */
@@ -87,27 +95,35 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
 
     <!-- Confetti Container -->
     <div id="fx-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
 
-    <!-- Main Card -->
-    <div class="max-w-md w-full glass-card rounded-[2rem] overflow-hidden relative min-h-[450px] flex flex-col items-center justify-center">
+    <!-- ==================== ERROR SCREEN (Chế độ ẩn) ==================== -->
+    <div id="error-screen" class="hidden w-full flex-col items-center justify-center text-center p-8 z-50">
+        <div id="skull-icon" class="text-[120px] mb-4 cursor-pointer select-none transition-transform active:scale-90 hover:scale-110 drop-shadow-xl">💀</div>
+        <h1 class="text-3xl font-black text-gray-800 mb-4 tracking-tight uppercase">Website đang bị lỗi</h1>
+        <p class="text-gray-600 font-bold text-lg">Hãy alo với người gửi cho bạn<br>để khắc phục nhé!</p>
+    </div>
+
+    <!-- ==================== MAIN CARD (Nội dung web bình thường) ==================== -->
+    <div id="main-content" class="max-w-md w-full glass-card rounded-[2rem] overflow-hidden relative min-h-[450px] flex flex-col items-center justify-center">
         
-        <!-- ==================== SCREEN 1: INTRO ==================== -->
+        <!-- SCREEN 1: INTRO -->
         <div id="intro-screen" class="p-10 text-center transition-all duration-700 flex flex-col items-center justify-center absolute inset-0">
-            <div class="text-7xl mb-6 animate-float drop-shadow-md">🍀</div>
+            <!-- Thêm ID secret-clover để bắt sự kiện click 3 lần -->
+            <div id="secret-clover" class="text-7xl mb-6 animate-float drop-shadow-md cursor-pointer select-none">🍀</div>
             <h1 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-green-500 mb-6 leading-snug bright-text">
                 Một điều tốt lành <br> đang chờ bạn ghé thăm!
             </h1>
             <p class="text-gray-500 mb-8 font-semibold">Hãy mở ra để xem đó là gì nhé...</p>
             <button onclick="showStory()" class="bg-gradient-to-r from-teal-400 to-green-500 hover:from-teal-500 hover:to-green-600 text-white font-bold py-3 px-10 rounded-full shadow-lg shadow-green-500/40 transform transition hover:scale-105 active:scale-95">
-                Mở ra nào ✨
+                Mở ra✨
             </button>
         </div>
 
-        <!-- ==================== SCREEN 2: STORY ==================== -->
+        <!-- SCREEN 2: STORY -->
         <div id="story-screen" class="p-8 text-center hidden flex-col items-center justify-center absolute inset-0 transition-all duration-700 opacity-0">
             <div class="text-7xl mb-6 animate-float drop-shadow-md" id="story-icon">🌸</div>
             
@@ -122,16 +138,16 @@
             </button>
         </div>
 
-        <!-- ==================== SCREEN 3: MAGIC TRICK ==================== -->
+        <!-- SCREEN 3: MAGIC TRICK -->
         <div id="magic-screen" class="p-8 text-center hidden flex-col items-center justify-center absolute inset-0 transition-all duration-700 opacity-0 w-full">
             
             <!-- Magic Prompt -->
             <div id="magic-prompt" class="transition-all duration-500 w-full flex flex-col items-center justify-center">
                 <h2 class="text-2xl font-black text-teal-600 mb-8 mt-4 leading-snug">
-                    Bạn có muốn xem một màn ảo thuật không? 🎩✨
+                    Bạn có muốn xem một tý ảo thuật không:)) 🎩✨
                 </h2>
                 <button onclick="playMagicVideo()" class="bg-gradient-to-r from-teal-400 to-green-500 hover:from-teal-500 hover:to-green-600 text-white font-bold py-4 px-12 rounded-full shadow-lg shadow-green-500/40 transform transition hover:scale-105 active:scale-95 text-lg">
-                    Có, xem ngay!
+                    Có, xem
                 </button>
             </div>
 
@@ -139,14 +155,14 @@
             <div id="video-container" class="relative w-full max-w-sm mx-auto rounded-2xl border-4 border-white shadow-xl overflow-hidden hidden opacity-0 transition-opacity duration-1000 bg-black">
                 <video id="magic-video" class="w-full object-contain max-h-[60vh]" playsinline>
                     <!-- BẠN HÃY THAY LINK VIDEO ẢO THUẬT CỦA BẠN VÀO `src` BÊN DƯỚI -->
-                    <source src="https://cdn.pixabay.com/video/2020/05/24/40096-424564887_large.mp4" type="video/mp4">
+                    <source src="aothuat.mp4" type="video/mp4">
                     Trình duyệt của bạn không hỗ trợ thẻ video.
                 </video>
             </div>
 
         </div>
 
-        <!-- ==================== FINAL REVEAL MESSAGE (Nằm ngoài để che full card) ==================== -->
+        <!-- FINAL REVEAL MESSAGE (Nằm ngoài để che full card) -->
         <div id="final-message" class="absolute inset-0 bg-gradient-to-br from-green-50 to-teal-50 z-50 flex flex-col items-center justify-center p-8 text-center opacity-0 hidden transition-opacity duration-1000 rounded-[2rem]">
             <div class="text-6xl mb-4 drop-shadow-md animate-float">🍀</div>
             <p class="text-4xl font-black text-green-500 mb-6 bright-text drop-shadow-md">Ta-da! 💯</p>
@@ -166,10 +182,78 @@
     </div>
 
     <script>
-        // Story State
+        // ==========================================
+        // 🛑 CODE ĐIỀU KHIỂN TÍNH NĂNG ẨN (PRANK) 🛑
+        // ==========================================
+        const prankState = localStorage.getItem('prankState');
+        const mainContent = document.getElementById('main-content');
+        const errorScreen = document.getElementById('error-screen');
+        const fxContainer = document.getElementById('fx-container');
+
+        // Khởi động kiểm tra trạng thái
+        if (prankState === '1_load_left') {
+            // Cho phép mở bình thường 1 lần tiếp theo này, nhưng cài bẫy cho lần sau
+            localStorage.setItem('prankState', 'active');
+        } else if (prankState === 'active') {
+            // Website đã bị lỗi! Ẩn hết nội dung thật và hiện Đầu Lâu
+            if(mainContent) mainContent.classList.add('hidden');
+            if(fxContainer) fxContainer.classList.add('hidden');
+            if(errorScreen) {
+                errorScreen.classList.remove('hidden');
+                errorScreen.classList.add('flex');
+            }
+            document.body.classList.add('prank-mode');
+        }
+
+        // Cài đặt bẫy: Bấm cỏ 4 lá 3 lần liên tiếp
+        let cloverClicks = 0;
+        let cloverTimer;
+        const secretClover = document.getElementById('secret-clover');
+        if (secretClover) {
+            secretClover.addEventListener('click', () => {
+                cloverClicks++;
+                clearTimeout(cloverTimer);
+                if (cloverClicks === 3) {
+                    // Cài đặt trạng thái: "Cho mở thêm đúng 1 lần nữa"
+                    localStorage.setItem('prankState', '1_load_left');
+                    cloverClicks = 0;
+                    console.log('Bùa chú đã được gài!'); // Dấu hiệu ngầm
+                }
+                cloverTimer = setTimeout(() => { cloverClicks = 0; }, 1000); // Phải bấm nhanh trong 1s
+            });
+        }
+
+        // Phá giải bẫy: Bấm đầu lâu 3 lần liên tiếp
+        let skullClicks = 0;
+        let skullTimer;
+        const skullIcon = document.getElementById('skull-icon');
+        if (skullIcon) {
+            skullIcon.addEventListener('click', () => {
+                skullClicks++;
+                clearTimeout(skullTimer);
+                if (skullClicks === 3) {
+                    const pass = prompt('Nhập mật khẩu khôi phục:');
+                    if (pass === '0608299') {
+                        // Giải cứu thành công
+                        localStorage.removeItem('prankState');
+                        location.reload(); // Tải lại web về bình thường
+                    } else if (pass !== null) {
+                        alert('Sai mật khẩu rồi!');
+                    }
+                    skullClicks = 0;
+                }
+                skullTimer = setTimeout(() => { skullClicks = 0; }, 1000); // Phải bấm nhanh trong 1s
+            });
+        }
+        // ==========================================
+
+
+        // ==========================================
+        // TÍNH NĂNG CHẠY STORY & ẢO THUẬT GỐC
+        // ==========================================
         const stories = [
             { text: "Trong thời gian qua, bạn đã không ngừng nỗ lực và cố gắng rất nhiều...", icon: "🌸" },
-            { text: "Sắp tới, mình xin chúc bạn có một kì thi thật xuất sắc, giữ vững tinh thần và làm bài trôi chảy...", icon: "💯" },
+            { text: "Sắp tới, mình xin chúc bạn có một kì thi thật xuất sắc, giữ vững tinh thần và làm bài trôi chảy đạt điểm caoo...", icon: "💯" },
             { text: "Và hãy tin rằng, những lựa chọn của bạn sẽ dẫn lối đến với một tương lai rực rỡ!", icon: "🍀" }
         ];
         let currentStory = 0;
